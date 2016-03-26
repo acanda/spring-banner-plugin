@@ -1,0 +1,87 @@
+= Spring Banner Plugin
+:plugin-version: 0.1
+:idprefix:
+:idseparator: -
+
+The Spring Banner Plugin is a Maven plugin generating the banner that is printed on start up of a Spring Boot application.
+
+[source,subs="attributes+"]
+----
+ ____                _                 ____
+/ ___|  _ __   _ __ (_) _ __    __ _  | __ )   __ _  _ __   _ __    ___  _ __
+\___ \ | '_ \ | '__|| || '_ \  / _` | |  _ \  / _` || '_ \ | '_ \  / _ \| '__|
+ ___) || |_) || |   | || | | || (_| | | |_) || (_| || | | || | | ||  __/| |
+|____/ | .__/ |_|   |_||_| |_| \__, | |____/  \__,_||_| |_||_| |_| \___||_|    {plugin-version}
+       |_|                     |___/
+----
+
+== Usage
+
+[source,xml,subs="attributes+"]
+----
+<build>
+    <plugins>
+        <plugin>
+            <groupId>ch.acanda.maven</groupId>
+            <artifactId>spring-banner-plugin</artifactId>
+            <vesion>{plugin-version}</version>
+            <executions>
+                <execution>
+                    <id>generate-spring-banner</id>
+                    <phase>generate-resources</phase> <!--1-->
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration> <!--2-->
+                <text>${project.name}</text>
+                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                <filename>banner.txt</filename>
+                <includeVersion>true</includeVersion>
+                <version>${project.version}</version>
+                <color>default</color>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+----
+<1> The default phase is `generate-resources`. This can be omitted unless you want to generate the banner in another phase.
+<2> All configuration parameters are optional. The values in this example are the default values.
+
+=== Configuration Parameters
+
+All parameters are optional.
+
+text::
+The banner text. +
+Default value: `${project.name}` +
+Property: `banner.text`
+
+outputDirectory::
+The directory of the banner file. +
+Default value: `${project.build.outputDirectory}` +
+Property: `banner.outputDirectory`
+
+filename::
+The name of the banner file. +
+Default value: `banner.txt` +
+Property: `banner.filename`
+
+includeVersion::
+`true` (default): include the version +
+`false`: do not include the version +
+Property: `banner.includeVersion`
+
+version::
+The version to print when `includeVersion` is `true`. +
+Default value: `${project.version}` +
+Property: `banner.version`
+
+color::
+The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
+`yellow`, `blue`, `magenta`, `cyan`, `white`, `bright black`, `bright red`,
+`bright green`, `bright yellow`, `bright blue`, `bright magenta`, `bright cyan`
+and `bright white`. +
+Default value: `default` +
+Property: `banner.color`

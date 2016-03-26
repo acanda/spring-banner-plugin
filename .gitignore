@@ -1,0 +1,23 @@
+### JetBrains
+*.iml
+.idea/
+*.ipr
+*.iws
+
+### Eclipse
+.metadata
+bin/
+.settings/
+.project
+.classpath
+
+### Maven
+target/
+
+### OSX
+.DS_Store
+
+### Windows
+Thumbs.db
+Desktop.ini
+
