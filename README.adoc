@@ -15,6 +15,7 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
        |_|                     |___/
 ----
 
+
 == Usage
 
 [source,xml,subs="attributes+"]
@@ -48,6 +49,7 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
 ----
 <1> The default phase is `generate-resources`. This can be omitted unless you want to generate the banner in another phase.
 <2> All configuration parameters are optional. The values in this example are the default values.
+
 
 === Configuration Parameters
 
@@ -85,3 +87,14 @@ The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
 and `bright white`. +
 Default value: `default` +
 Property: `banner.color`
+
+
+== Build Status
+
+image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=master["Build Status", link="https://travis-ci.org/acanda/spring-banner-plugin"]
+image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=master"]
+
+
+== License
+
+The Spring Banner Plugin is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
