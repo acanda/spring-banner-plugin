@@ -25,7 +25,7 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
         <plugin>
             <groupId>ch.acanda.maven</groupId>
             <artifactId>spring-banner-plugin</artifactId>
-            <vesion>{plugin-version}</version>
+            <version>{plugin-version}</version>
             <executions>
                 <execution>
                     <id>generate-spring-banner</id>
