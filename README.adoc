@@ -70,15 +70,15 @@ The name of the banner file. +
 Default value: `banner.txt` +
 Property: `banner.filename`
 
-includeVersion::
-`true` (default): include the version +
-`false`: do not include the version +
-Property: `banner.includeVersion`
+includeInfo::
+`true` (default): include the info line +
+`false`: do not include the info line +
+Property: `banner.includeInfo`
 
-version::
-The version to print when `includeVersion` is `true`. +
-Default value: `${project.version}` +
-Property: `banner.version`
+info::
+The line to print under the banner when `includeInfo` is `true`. +
+Default value: `Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}` +
+Property: `banner.info`
 
 color::
 The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
