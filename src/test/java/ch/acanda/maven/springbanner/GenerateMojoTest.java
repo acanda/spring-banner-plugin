@@ -3,6 +3,7 @@ package ch.acanda.maven.springbanner;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
+import org.apache.maven.project.MavenProject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -13,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
+import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,12 +27,13 @@ public class GenerateMojoTest {
     @Test
     public void generateSimpleBanner() throws Exception {
         File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo("Hello, World!",
+        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                             "Hello, World!",
                                              bannerFile.getParentFile(),
                                              bannerFile.getName(),
                                              false,
-                                             null,
-                                             "default");
+                                             INFO_DEFAULT_VALUE,
+                                             COLOR_DEFAULT_VALUE);
 
         mojo.execute();
 
@@ -37,28 +41,32 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithVersion() throws Exception {
+    public void generateBannerWithInfo() throws Exception {
         File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo("Hello, World!",
+        MavenProject project = new MavenProject();
+        project.setVersion("1.2.3");
+        GenerateMojo mojo = new GenerateMojo(project,
+                                             "Hello, World!",
                                              bannerFile.getParentFile(),
                                              bannerFile.getName(),
                                              true,
-                                             "1.0",
-                                             "default");
+                                             INFO_DEFAULT_VALUE,
+                                             COLOR_DEFAULT_VALUE);
 
         mojo.execute();
 
-        assertBanner(bannerFile, "banner-version.txt");
+        assertBanner(bannerFile, "banner-info.txt");
     }
 
     @Test
     public void generateBannerWithColor() throws Exception {
         File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo("Hello, World!",
+        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                             "Hello, World!",
                                              bannerFile.getParentFile(),
                                              bannerFile.getName(),
                                              false,
-                                             null,
+                                             INFO_DEFAULT_VALUE,
                                              "red");
 
         mojo.execute();

@@ -7,6 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,22 +17,35 @@ import java.nio.file.Path;
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class GenerateMojo extends AbstractMojo {
 
-    @Parameter(property = "banner.text", required = true, defaultValue = "${project.name}")
+    public static final String TEXT_DEFAULT_VALUE = "${project.name}";
+    public static final String OUTPUT_DIRECTORY_DEFAULT_VALUE = "${project.build.outputDirectory}";
+    public static final String FILENAME_DEFAULT_VALUE = "banner.txt";
+    public static final String INCLUDE_INFO_DEFAULT_VALUE = "true";
+    public static final String COLOR_DEFAULT_VALUE = "default";
+    public static final String INFO_DEFAULT_VALUE =
+            "Version: ${application.version:${project.version}}, "
+            + "Server: ${server.address:localhost}:${server.port:8080}, "
+            + "Active Profiles: ${spring.profiles.active:none}";
+
+    @Parameter(defaultValue = "${project}")
+    private MavenProject project;
+
+    @Parameter(property = "banner.text", required = true, defaultValue = TEXT_DEFAULT_VALUE)
     private String text;
 
-    @Parameter(property = "banner.outputDirectory", required = true, defaultValue = "${project.build.outputDirectory}")
+    @Parameter(property = "banner.outputDirectory", required = true, defaultValue = OUTPUT_DIRECTORY_DEFAULT_VALUE)
     private File outputDirectory;
 
-    @Parameter(property = "banner.filename", required = true, defaultValue = "banner.txt")
+    @Parameter(property = "banner.filename", required = true, defaultValue = FILENAME_DEFAULT_VALUE)
     private String filename;
 
-    @Parameter(property = "banner.includeVersion", defaultValue = "true")
-    private boolean includeVersion;
+    @Parameter(property = "banner.includeInfo", defaultValue = INCLUDE_INFO_DEFAULT_VALUE)
+    private boolean includeInfo;
 
-    @Parameter(property = "banner.version", defaultValue = "${project.version}")
-    private String version;
+    @Parameter(property = "banner.info", defaultValue = INFO_DEFAULT_VALUE)
+    private String info;
 
-    @Parameter(property = "banner.color", defaultValue = "default")
+    @Parameter(property = "banner.color", defaultValue = COLOR_DEFAULT_VALUE)
     private String color;
 
     public GenerateMojo() {
@@ -41,17 +55,19 @@ public class GenerateMojo extends AbstractMojo {
     /**
      * This constructor can be used to set all the parameters of the mojo.
      */
-    public GenerateMojo(final String text,
+    public GenerateMojo(final MavenProject project,
+                        final String text,
                         final File outputDirectory,
                         final String filename,
-                        final boolean includeVersion,
-                        final String version,
+                        final boolean includeInfo,
+                        final String info,
                         final String color) {
+        this.project = project;
         this.text = text;
         this.outputDirectory = outputDirectory;
         this.filename = filename;
-        this.includeVersion = includeVersion;
-        this.version = version;
+        this.includeInfo = includeInfo;
+        this.info = info;
         this.color = color == null ? Color.DEFAULT.name() : color;
     }
 
@@ -73,7 +89,6 @@ public class GenerateMojo extends AbstractMojo {
         final String rawBanner = FigletFont.convertOneLine(text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);
-        final int baseline = 4;
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
         for (int i = 0; i < lines.length; i++) {
             if (i > 0) {
@@ -83,15 +98,16 @@ public class GenerateMojo extends AbstractMojo {
                 Color.nameFromTagValue(color)
                      .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
             }
-            if (includeVersion && i == baseline) {
-                banner.append(lines[i]).append(' ').append(version);
-            } else {
-                banner.append(StringUtils.stripEnd(lines[i], " "));
-            }
+            banner.append(StringUtils.stripEnd(lines[i], " "));
         }
         if (!isDefaultColor) {
             banner.append("${AnsiColor.DEFAULT}");
         }
+        if (includeInfo) {
+            info = info == null ? null : info.replaceAll("\\$\\{project\\.version\\}", project.getVersion());
+            banner.append('\n').append(info);
+        }
+        banner.append('\n');
         getLog().debug('\n' + banner.toString());
         return banner.toString();
     }
@@ -102,6 +118,5 @@ public class GenerateMojo extends AbstractMojo {
         outputDirectory.mkdirs();
         Files.write(bannerFile, banner.getBytes("UTF-8"));
     }
-
 
 }
