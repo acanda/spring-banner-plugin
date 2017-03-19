@@ -11,6 +11,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -86,7 +87,8 @@ public class GenerateMojo extends AbstractMojo {
     }
 
     private String generateBanner() throws IOException {
-        final String rawBanner = FigletFont.convertOneLine(text);
+        final InputStream fontStream = GenerateMojo.class.getResourceAsStream("/condensed.flf");
+        final String rawBanner = FigletFont.convertOneLine(fontStream, text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
