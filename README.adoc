@@ -1,5 +1,5 @@
 = Spring Banner Plugin
-:plugin-version: 0.1
+:plugin-version: 1.0
 :idprefix:
 :idseparator: -
 
@@ -11,8 +11,9 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
 / ___|  _ __   _ __ (_) _ __    __ _  | __ )   __ _  _ __   _ __    ___  _ __
 \___ \ | '_ \ | '__|| || '_ \  / _` | |  _ \  / _` || '_ \ | '_ \  / _ \| '__|
  ___) || |_) || |   | || | | || (_| | | |_) || (_| || | | || | | ||  __/| |
-|____/ | .__/ |_|   |_||_| |_| \__, | |____/  \__,_||_| |_||_| |_| \___||_|    {plugin-version}
+|____/ | .__/ |_|   |_||_| |_| \__, | |____/  \__,_||_| |_||_| |_| \___||_|
        |_|                     |___/
+Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
 ----
 
 
@@ -39,7 +40,8 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
                 <text>${project.name}</text>
                 <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                 <filename>banner.txt</filename>
-                <includeVersion>true</includeVersion>
+                <includeInfo>true</includeInfo>
+                <info>Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
                 <version>${project.version}</version>
                 <color>default</color>
             </configuration>
