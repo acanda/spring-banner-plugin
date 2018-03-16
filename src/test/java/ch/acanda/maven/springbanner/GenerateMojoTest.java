@@ -78,7 +78,8 @@ public class GenerateMojoTest {
         String generatedBanner = Files.toString(generatedFile, Charsets.UTF_8);
         InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile);
         try (Reader expectedFileReader = new InputStreamReader(expectedFileStream, Charsets.UTF_8)) {
-            String expectedBanner = CharStreams.toString(expectedFileReader);
+            String expectedBanner = CharStreams.toString(expectedFileReader)
+                                               .replaceAll("\\r\\n", "\n");
             assertThat(generatedBanner, is(expectedBanner));
         }
     }
