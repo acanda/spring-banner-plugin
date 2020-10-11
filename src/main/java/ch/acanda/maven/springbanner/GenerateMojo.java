@@ -27,6 +27,8 @@ public class GenerateMojo extends AbstractMojo {
             "Version: ${application.version:${project.version}}, "
             + "Server: ${server.address:localhost}:${server.port:8080}, "
             + "Active Profiles: ${spring.profiles.active:none}";
+    public static final String FONT_FILE_DEFAULT_VALUE =
+            "/condensed.flf";
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -49,6 +51,9 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "banner.color", defaultValue = COLOR_DEFAULT_VALUE)
     private String color;
 
+    @Parameter(property = "banner.fontFile", defaultValue = FONT_FILE_DEFAULT_VALUE)
+    private String fontFile;
+
     public GenerateMojo() {
         // this constructor is used by maven to create the mojo
     }
@@ -62,7 +67,8 @@ public class GenerateMojo extends AbstractMojo {
                         final String filename,
                         final boolean includeInfo,
                         final String info,
-                        final String color) {
+                        final String color,
+                        final String fontFile) {
         this.project = project;
         this.text = text;
         this.outputDirectory = outputDirectory;
@@ -70,6 +76,7 @@ public class GenerateMojo extends AbstractMojo {
         this.includeInfo = includeInfo;
         this.info = info;
         this.color = color == null ? Color.DEFAULT.name() : color;
+        this.fontFile = fontFile;
     }
 
     /**
@@ -87,7 +94,7 @@ public class GenerateMojo extends AbstractMojo {
     }
 
     private String generateBanner() throws IOException {
-        final InputStream fontStream = GenerateMojo.class.getResourceAsStream("/condensed.flf");
+        final InputStream fontStream = GenerateMojo.class.getResourceAsStream(fontFile);
         final String rawBanner = FigletFont.convertOneLine(fontStream, text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);

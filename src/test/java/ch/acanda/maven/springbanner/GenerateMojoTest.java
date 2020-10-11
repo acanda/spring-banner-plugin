@@ -8,14 +8,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 
-import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
-import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
+import static ch.acanda.maven.springbanner.GenerateMojo.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -33,7 +28,8 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              false,
                                              INFO_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+                                             COLOR_DEFAULT_VALUE,
+                                             FONT_FILE_DEFAULT_VALUE);
 
         mojo.execute();
 
@@ -51,7 +47,8 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              true,
                                              INFO_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+                                             COLOR_DEFAULT_VALUE,
+                                             FONT_FILE_DEFAULT_VALUE);
 
         mojo.execute();
 
@@ -67,11 +64,29 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              false,
                                              INFO_DEFAULT_VALUE,
-                                             "red");
+                                             "red",
+                                             FONT_FILE_DEFAULT_VALUE);
 
         mojo.execute();
 
         assertBanner(bannerFile, "banner-color.txt");
+    }
+
+    @Test
+    public void generateBannerWithCustomFontFile() throws Exception {
+        File bannerFile = folder.newFile("banner.txt");
+        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                             "Hello, World!",
+                                             bannerFile.getParentFile(),
+                                             bannerFile.getName(),
+                                             false,
+                                             INFO_DEFAULT_VALUE,
+                                             COLOR_DEFAULT_VALUE,
+                                             "/chunky.flf");
+
+        mojo.execute();
+
+        assertBanner(bannerFile, "banner-font.txt");
     }
 
     private void assertBanner(File generatedFile, String expectedFile) throws IOException {
