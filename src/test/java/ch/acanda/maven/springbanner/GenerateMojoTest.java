@@ -16,7 +16,6 @@ import java.io.Reader;
 
 import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
-import static ch.acanda.maven.springbanner.GenerateMojo.FONT_FILE_DEFAULT_VALUE;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -35,7 +34,7 @@ public class GenerateMojoTest {
                                              false,
                                              INFO_DEFAULT_VALUE,
                                              COLOR_DEFAULT_VALUE,
-                                             FONT_FILE_DEFAULT_VALUE);
+                                             null);
 
         mojo.execute();
 
@@ -54,7 +53,7 @@ public class GenerateMojoTest {
                                              true,
                                              INFO_DEFAULT_VALUE,
                                              COLOR_DEFAULT_VALUE,
-                                             FONT_FILE_DEFAULT_VALUE);
+                                             null);
 
         mojo.execute();
 
@@ -71,7 +70,7 @@ public class GenerateMojoTest {
                                              false,
                                              INFO_DEFAULT_VALUE,
                                              "red",
-                                             FONT_FILE_DEFAULT_VALUE);
+                                             null);
 
         mojo.execute();
 
@@ -88,7 +87,7 @@ public class GenerateMojoTest {
                                              false,
                                              INFO_DEFAULT_VALUE,
                                              COLOR_DEFAULT_VALUE,
-                                             "/chunky.flf");
+                                             "src/test/resources/chunky.flf");
 
         mojo.execute();
 
