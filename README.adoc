@@ -90,6 +90,9 @@ and `bright white`. +
 Default value: `default` +
 Property: `banner.color`
 
+fontFile::
+The custom FIGlet font file (.flf) to be used.
+File should be referenced using full path e.g. `<fontFile>${basedir}/src/main/resources/chunky.flf</fontFile>`
 
 == Build Status
 

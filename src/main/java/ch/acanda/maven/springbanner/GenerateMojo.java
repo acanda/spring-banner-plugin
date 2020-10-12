@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class GenerateMojo extends AbstractMojo {
@@ -25,8 +26,8 @@ public class GenerateMojo extends AbstractMojo {
     public static final String COLOR_DEFAULT_VALUE = "default";
     public static final String INFO_DEFAULT_VALUE =
             "Version: ${application.version:${project.version}}, "
-            + "Server: ${server.address:localhost}:${server.port:8080}, "
-            + "Active Profiles: ${spring.profiles.active:none}";
+                    + "Server: ${server.address:localhost}:${server.port:8080}, "
+                    + "Active Profiles: ${spring.profiles.active:none}";
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -49,6 +50,9 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "banner.color", defaultValue = COLOR_DEFAULT_VALUE)
     private String color;
 
+    @Parameter(property = "banner.fontFile")
+    private String fontFile;
+
     public GenerateMojo() {
         // this constructor is used by maven to create the mojo
     }
@@ -62,7 +66,8 @@ public class GenerateMojo extends AbstractMojo {
                         final String filename,
                         final boolean includeInfo,
                         final String info,
-                        final String color) {
+                        final String color,
+                        final String fontFile) {
         this.project = project;
         this.text = text;
         this.outputDirectory = outputDirectory;
@@ -70,6 +75,7 @@ public class GenerateMojo extends AbstractMojo {
         this.includeInfo = includeInfo;
         this.info = info;
         this.color = color == null ? Color.DEFAULT.name() : color;
+        this.fontFile = fontFile;
     }
 
     /**
@@ -87,7 +93,7 @@ public class GenerateMojo extends AbstractMojo {
     }
 
     private String generateBanner() throws IOException {
-        final InputStream fontStream = GenerateMojo.class.getResourceAsStream("/condensed.flf");
+        final InputStream fontStream = getFontFileStream();
         final String rawBanner = FigletFont.convertOneLine(fontStream, text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);
@@ -98,7 +104,7 @@ public class GenerateMojo extends AbstractMojo {
             }
             if (!isDefaultColor) {
                 Color.nameFromTagValue(color)
-                     .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
+                        .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
             }
             banner.append(StringUtils.stripEnd(lines[i], " "));
         }
@@ -112,6 +118,13 @@ public class GenerateMojo extends AbstractMojo {
         banner.append('\n');
         getLog().debug('\n' + banner.toString());
         return banner.toString();
+    }
+
+    private InputStream getFontFileStream() throws IOException {
+        if (fontFile != null) {
+            return Files.newInputStream(Paths.get(fontFile));
+        }
+        return GenerateMojo.class.getResourceAsStream("/condensed.flf");
     }
 
     private void writeBannerFile(final String banner) throws IOException {

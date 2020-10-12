@@ -33,7 +33,8 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              false,
                                              INFO_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+                                             COLOR_DEFAULT_VALUE,
+                                             null);
 
         mojo.execute();
 
@@ -51,7 +52,8 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              true,
                                              INFO_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+                                             COLOR_DEFAULT_VALUE,
+                                             null);
 
         mojo.execute();
 
@@ -67,11 +69,29 @@ public class GenerateMojoTest {
                                              bannerFile.getName(),
                                              false,
                                              INFO_DEFAULT_VALUE,
-                                             "red");
+                                             "red",
+                                             null);
 
         mojo.execute();
 
         assertBanner(bannerFile, "banner-color.txt");
+    }
+
+    @Test
+    public void generateBannerWithCustomFontFile() throws Exception {
+        File bannerFile = folder.newFile("banner.txt");
+        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                             "Hello, World!",
+                                             bannerFile.getParentFile(),
+                                             bannerFile.getName(),
+                                             false,
+                                             INFO_DEFAULT_VALUE,
+                                             COLOR_DEFAULT_VALUE,
+                                             "src/test/resources/chunky.flf");
+
+        mojo.execute();
+
+        assertBanner(bannerFile, "banner-font.txt");
     }
 
     private void assertBanner(File generatedFile, String expectedFile) throws IOException {
