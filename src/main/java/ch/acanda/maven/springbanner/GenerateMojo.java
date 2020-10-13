@@ -12,9 +12,16 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+
+import static java.util.stream.Collectors.joining;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class GenerateMojo extends AbstractMojo {
@@ -24,10 +31,13 @@ public class GenerateMojo extends AbstractMojo {
     public static final String FILENAME_DEFAULT_VALUE = "banner.txt";
     public static final String INCLUDE_INFO_DEFAULT_VALUE = "true";
     public static final String COLOR_DEFAULT_VALUE = "default";
+    public static final String FONT_DEFAULT_VALUE = "condensed";
     public static final String INFO_DEFAULT_VALUE =
             "Version: ${application.version:${project.version}}, "
                     + "Server: ${server.address:localhost}:${server.port:8080}, "
                     + "Active Profiles: ${spring.profiles.active:none}";
+
+    private static final String FONT_PREFIX_FILE = "file:";
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -47,11 +57,11 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "banner.info", defaultValue = INFO_DEFAULT_VALUE)
     private String info;
 
+    @Parameter(property = "banner.font", defaultValue = FONT_DEFAULT_VALUE)
+    private String font;
+
     @Parameter(property = "banner.color", defaultValue = COLOR_DEFAULT_VALUE)
     private String color;
-
-    @Parameter(property = "banner.fontFile")
-    private String fontFile;
 
     public GenerateMojo() {
         // this constructor is used by maven to create the mojo
@@ -66,16 +76,16 @@ public class GenerateMojo extends AbstractMojo {
                         final String filename,
                         final boolean includeInfo,
                         final String info,
-                        final String color,
-                        final String fontFile) {
+                        final String font,
+                        final String color) {
         this.project = project;
         this.text = text;
         this.outputDirectory = outputDirectory;
         this.filename = filename;
         this.includeInfo = includeInfo;
         this.info = info;
+        this.font = font;
         this.color = color == null ? Color.DEFAULT.name() : color;
-        this.fontFile = fontFile;
     }
 
     /**
@@ -92,7 +102,7 @@ public class GenerateMojo extends AbstractMojo {
         }
     }
 
-    private String generateBanner() throws IOException {
+    private String generateBanner() throws IOException, MojoFailureException {
         final InputStream fontStream = getFontFileStream();
         final String rawBanner = FigletFont.convertOneLine(fontStream, text);
         final String[] lines = rawBanner.split("\n");
@@ -104,7 +114,7 @@ public class GenerateMojo extends AbstractMojo {
             }
             if (!isDefaultColor) {
                 Color.nameFromTagValue(color)
-                        .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
+                     .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
             }
             banner.append(StringUtils.stripEnd(lines[i], " "));
         }
@@ -120,11 +130,44 @@ public class GenerateMojo extends AbstractMojo {
         return banner.toString();
     }
 
-    private InputStream getFontFileStream() throws IOException {
-        if (fontFile != null) {
-            return Files.newInputStream(Paths.get(fontFile));
+    private InputStream getFontFileStream() throws MojoFailureException {
+        if (font.startsWith(FONT_PREFIX_FILE)) {
+            final Path path = Paths.get(font.substring(FONT_PREFIX_FILE.length()));
+            try {
+                return Files.newInputStream(path);
+            } catch (final IOException e) {
+                throw new MojoFailureException("Font file " + path + " not found.", e);
+            }
         }
-        return GenerateMojo.class.getResourceAsStream("/condensed.flf");
+        final InputStream stream = GenerateMojo.class.getResourceAsStream("/" + font + ".flf");
+        if (stream == null) {
+            try {
+                final String fonts = Files.walk(getRootResource(), 1)
+                                          .filter(GenerateMojo::isReadableFont)
+                                          .map(path -> path.getFileName().toString())
+                                          .map(name -> name.substring(0, name.length() - 4))
+                                          .collect(joining(", "));
+                final String msg = "Built-in font %s does not exist. Available fonts: %s.";
+                throw new MojoFailureException(String.format(msg, font, fonts));
+
+            } catch (final IOException | URISyntaxException e) {
+                throw new MojoFailureException("Built-in font " + font + " does not exist.", e);
+            }
+        }
+        return stream;
+    }
+
+    private static Path getRootResource() throws URISyntaxException, IOException {
+        final URI uri = GenerateMojo.class.getResource("/condensed.flf").toURI();
+        if (uri.getScheme().equals("jar")) {
+            final FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            return fileSystem.getPath("/");
+        }
+        return Paths.get(uri).getParent();
+    }
+
+    private static boolean isReadableFont(final Path path) {
+        return path.toString().endsWith(".flf") && Files.isReadable(path) && Files.isRegularFile(path);
     }
 
     private void writeBannerFile(final String banner) throws IOException {
