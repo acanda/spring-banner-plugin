@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.joining;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
@@ -34,8 +35,8 @@ public class GenerateMojo extends AbstractMojo {
     public static final String FONT_DEFAULT_VALUE = "condensed";
     public static final String INFO_DEFAULT_VALUE =
             "Version: ${application.version:${project.version}}, "
-                    + "Server: ${server.address:localhost}:${server.port:8080}, "
-                    + "Active Profiles: ${spring.profiles.active:none}";
+            + "Server: ${server.address:localhost}:${server.port:8080}, "
+            + "Active Profiles: ${spring.profiles.active:none}";
 
     private static final String FONT_PREFIX_FILE = "file:";
 
@@ -92,12 +93,13 @@ public class GenerateMojo extends AbstractMojo {
      * Generates the Spring Boot banner. Make sure that all parameters are
      * initialized before calling this method.
      */
+    @Override
     public void execute() throws MojoFailureException {
         try {
             getLog().info("Generating Spring Boot banner...");
             final String banner = generateBanner();
             writeBannerFile(banner);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
     }
@@ -136,7 +138,7 @@ public class GenerateMojo extends AbstractMojo {
             try {
                 return Files.newInputStream(path);
             } catch (final IOException e) {
-                throw new MojoFailureException("Font file " + path + " not found.", e);
+                throw new MojoFailureException("Font file " + path + " does not exist.", e);
             }
         }
         final InputStream stream = GenerateMojo.class.getResourceAsStream("/" + font + ".flf");
@@ -174,7 +176,7 @@ public class GenerateMojo extends AbstractMojo {
         final Path bannerFile = outputDirectory.toPath().resolve(filename);
         getLog().debug("Writing banner to file " + bannerFile);
         outputDirectory.mkdirs();
-        Files.write(bannerFile, banner.getBytes("UTF-8"));
+        Files.write(bannerFile, banner.getBytes(UTF_8));
     }
 
 }
