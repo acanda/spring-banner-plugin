@@ -1,43 +1,35 @@
 package ch.acanda.maven.springbanner;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Files;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.FONT_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class GenerateMojoTest {
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
     @Test
-    public void generateSimpleBanner() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             false,
-                                             INFO_DEFAULT_VALUE,
-                                             FONT_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+    public void generateSimpleBanner(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   FONT_DEFAULT_VALUE,
+                                                   COLOR_DEFAULT_VALUE);
 
         mojo.execute();
 
@@ -45,18 +37,18 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithInfo() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        MavenProject project = new MavenProject();
+    public void generateBannerWithInfo(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final MavenProject project = new MavenProject();
         project.setVersion("1.2.3");
-        GenerateMojo mojo = new GenerateMojo(project,
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             true,
-                                             INFO_DEFAULT_VALUE,
-                                             FONT_DEFAULT_VALUE,
-                                             COLOR_DEFAULT_VALUE);
+        final GenerateMojo mojo = new GenerateMojo(project,
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   true,
+                                                   INFO_DEFAULT_VALUE,
+                                                   FONT_DEFAULT_VALUE,
+                                                   COLOR_DEFAULT_VALUE);
 
         mojo.execute();
 
@@ -64,16 +56,16 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithColor() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             false,
-                                             INFO_DEFAULT_VALUE,
-                                             FONT_DEFAULT_VALUE,
-                                             "red");
+    public void generateBannerWithColor(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   FONT_DEFAULT_VALUE,
+                                                   "red");
 
         mojo.execute();
 
@@ -81,60 +73,58 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithCustomFontFile() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             false,
-                                             INFO_DEFAULT_VALUE,
-                                             "file:src/test/resources/chunky.flf",
-                                             COLOR_DEFAULT_VALUE);
+    public void generateBannerWithCustomFontFile(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   "file:src/test/resources/chunky.flf",
+                                                   COLOR_DEFAULT_VALUE);
 
         mojo.execute();
 
         assertBanner(bannerFile, "banner-font.txt");
     }
 
-    @Test(expected = MojoFailureException.class)
-    public void generateBannerWithMissingCustomFontFile() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             false,
-                                             INFO_DEFAULT_VALUE,
-                                             "file:src/test/resources/missing.flf",
-                                             COLOR_DEFAULT_VALUE);
+    @Test
+    public void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   "file:src/test/resources/missing.flf",
+                                                   COLOR_DEFAULT_VALUE);
 
-        mojo.execute();
+        final Path font = Paths.get("src/test/resources/missing.flf");
+        assertThatThrownBy(mojo::execute).isExactlyInstanceOf(MojoFailureException.class)
+                                         .hasMessage("Font file %s does not exist.", font);
     }
 
-    @Test(expected = MojoFailureException.class)
-    public void generateBannerWithMissingBuiltInFont() throws Exception {
-        File bannerFile = folder.newFile("banner.txt");
-        GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                             "Hello, World!",
-                                             bannerFile.getParentFile(),
-                                             bannerFile.getName(),
-                                             false,
-                                             INFO_DEFAULT_VALUE,
-                                             "missing",
-                                             COLOR_DEFAULT_VALUE);
+    @Test
+    public void generateBannerWithMissingBuiltInFont(@TempDir final Path folder) throws Exception {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   "foo",
+                                                   COLOR_DEFAULT_VALUE);
 
-        mojo.execute();
+        assertThatThrownBy(mojo::execute).isExactlyInstanceOf(MojoFailureException.class)
+                                         .hasMessage("Built-in font foo does not exist. Available fonts: condensed.");
     }
 
-    private void assertBanner(File generatedFile, String expectedFile) throws IOException {
-        String generatedBanner = Files.toString(generatedFile, Charsets.UTF_8);
-        InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile);
-        try (Reader expectedFileReader = new InputStreamReader(expectedFileStream, Charsets.UTF_8)) {
-            String expectedBanner = CharStreams.toString(expectedFileReader)
-                                               .replaceAll("\\r\\n", "\n");
-            assertThat(generatedBanner, is(expectedBanner));
-        }
+    private void assertBanner(final Path generatedFile, final String expectedFile) throws IOException {
+        final InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile);
+        Assertions.assertThat(expectedFileStream).hasBinaryContent(Files.readAllBytes(generatedFile));
     }
 
 }
