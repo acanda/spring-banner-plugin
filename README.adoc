@@ -43,6 +43,7 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
                 <includeInfo>true</includeInfo>
                 <info>Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
                 <version>${project.version}</version>
+                <font>condensed</font>
                 <color>default</color>
             </configuration>
         </plugin>
@@ -82,6 +83,17 @@ The line to print under the banner when `includeInfo` is `true`. +
 Default value: `Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}` +
 Property: `banner.info`
 
+font::
+The FIGlet font to be used for the banner. This can either be the name of a
+built-in font, or a path to a custom FIGlet font file (.flf). +
+Available built-in fonts: `condensed`. +
+Custom fonts must be prefixed with `file:` and should be referenced using the
+full path, e.g. `<font>file:${project.basedir}/fonts/chunky.flf</font>`.
+Relative paths are relative to the working directory. The font file is only
+needed during compile time and does not need to be included in the final jar. +
+Default value: `condensed` +
+Property: `banner.font`
+
 color::
 The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
 `yellow`, `blue`, `magenta`, `cyan`, `white`, `bright black`, `bright red`,
@@ -89,10 +101,6 @@ The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
 and `bright white`. +
 Default value: `default` +
 Property: `banner.color`
-
-fontFile::
-The custom FIGlet font file (.flf) to be used.
-File should be referenced using full path e.g. `<fontFile>${basedir}/src/main/resources/chunky.flf</fontFile>`
 
 == Build Status
 
