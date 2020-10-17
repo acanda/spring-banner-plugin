@@ -156,8 +156,11 @@ public class GenerateMojo extends AbstractMojo {
     private void writeBannerFile(final String banner) throws IOException {
         final Path bannerFile = outputDirectory.toPath().resolve(filename);
         getLog().debug("Writing banner to file " + bannerFile);
-        outputDirectory.mkdirs();
-        Files.write(bannerFile, banner.getBytes(UTF_8));
+        if (outputDirectory.exists() || outputDirectory.mkdirs()) {
+            Files.write(bannerFile, banner.getBytes(UTF_8));
+        } else {
+            throw new IOException("Failed to create output directory " + outputDirectory);
+        }
     }
 
 }
