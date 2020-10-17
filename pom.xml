@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.8</version>
+                <version>3.13.0</version>
                 <executions>
                     <execution>
                         <id>pmd</id>
@@ -125,21 +125,25 @@
                     <rulesets>
                         <ruleset>${project.basedir}/config/pmd.xml</ruleset>
                     </rulesets>
-                    <excludeRoots>
-                        <excludeRoot>${project.basedir}/target/generated-sources/plugin</excludeRoot>
-                    </excludeRoots>
+                    <includeTests>true</includeTests>
                     <printFailingErrors>true</printFailingErrors>
+                    <linkXRef>false</linkXRef>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>net.sourceforge.pmd</groupId>
                         <artifactId>pmd-core</artifactId>
-                        <version>5.8.1</version>
+                        <version>6.28.0</version>
                     </dependency>
                     <dependency>
                         <groupId>net.sourceforge.pmd</groupId>
                         <artifactId>pmd-java</artifactId>
-                        <version>5.8.1</version>
+                        <version>6.28.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-xml</artifactId>
+                        <version>6.28.0</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -1,96 +1,100 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="pmd" xsi:noNamespaceSchemaLocation="http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
-         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0">
-    <description>Base PMD rules for all projects</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="eclipse-pmd rules"
+         xsi:noNamespaceSchemaLocation="http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0">
 
-    <rule ref="rulesets/java/basic.xml" />
+    <!-- last updated for PMD 6.28.0 -->
 
-    <rule ref="rulesets/java/braces.xml" />
+    <description>PMD rules for spring-banner-plugin</description>
 
-    <rule ref="rulesets/java/clone.xml" />
+    <exclude-pattern>.*/generated-sources/.*</exclude-pattern>
 
-    <rule ref="rulesets/java/codesize.xml">
-        <exclude name="NPathComplexity" />
-        <exclude name="CyclomaticComplexity" />
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
+        <exclude name="JUnitTestsShouldIncludeAssert"/>
     </rule>
 
-    <rule ref="rulesets/java/comments.xml/CommentSize">
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="CallSuperInConstructor"/>
+        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="DefaultPackage"/>
+        <exclude name="LongVariable"/>
+        <exclude name="OnlyOneReturn"/>
+        <exclude name="ShortMethodName"/>
+        <exclude name="ShortVariable"/>
+        <exclude name="TooManyStaticImports"/>
+    </rule>
+    <rule ref="category/java/codestyle.xml/LongVariable">
         <properties>
-            <property name="maxLines" value="200" />
-            <property name="maxLineLength" value="120" />
+            <property name="minimum" value="32"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+        <properties>
+            <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]+"/>
         </properties>
     </rule>
 
-    <!-- <rule ref="rulesets/java/controversial.xml" /> -->
-
-    <rule ref="rulesets/java/coupling.xml">
-        <exclude name="LawOfDemeter" />
-        <exclude name="LoosePackageCoupling" />
+    <rule ref="category/java/design.xml">
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="LawOfDemeter"/>
+        <exclude name="TooManyMethods"/>
+        <exclude name="LoosePackageCoupling"/>
     </rule>
-
-    <rule ref="rulesets/java/design.xml">
-        <exclude name="ConfusingTernary" />
-    </rule>
-
-    <rule ref="rulesets/java/empty.xml">
-        <exclude name="EmptyCatchBlock" />
-    </rule>
-    <rule ref="rulesets/java/empty.xml/EmptyCatchBlock">
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
-            <property name="allowCommentedBlocks" value="true" />
+            <property name="violationSuppressRegex" value=".*'equals\(Object\)'.*"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/NPathComplexity">
+        <properties>
+            <property name="violationSuppressRegex" value=".*'equals\(Object\)'.*"/>
         </properties>
     </rule>
 
-    <rule ref="rulesets/java/finalizers.xml" />
-
-    <rule ref="rulesets/java/imports.xml">
-        <exclude name="TooManyStaticImports" />
+    <rule ref="category/java/documentation.xml">
+        <exclude name="CommentRequired"/>
+        <exclude name="CommentSize"/>
     </rule>
-    <rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="AvoidDuplicateLiterals"/>
+        <exclude name="AvoidFieldNameMatchingMethodName"/>
+        <exclude name="AvoidLiteralsInIfCondition"/>
+        <exclude name="BeanMembersShouldSerialize"/>
+        <exclude name="EmptyCatchBlock"/>
+    </rule>
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
         <properties>
-            <property name="maximumStaticImports" value="10" />
+            <property name="skipAnnotations" value="true"/>
+            <property name="violationSuppressXPath"
+                      value="./ancestor::ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+        <properties>
+            <property name="ignoreMagicNumbers" value="-1,0,1,2"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="true"/>
         </properties>
     </rule>
 
-    <rule ref="rulesets/java/j2ee.xml/DoNotCallSystemExit" />
-
-    <!-- <rule ref="rulesets/java/javabeans.xml" /> -->
-
-    <rule ref="rulesets/java/logging-java.xml" />
-
-    <rule ref="rulesets/java/migrating.xml" />
-
-    <rule ref="rulesets/java/naming.xml">
-        <exclude name="LongVariable" />
-        <exclude name="ShortVariable" />
-        <exclude name="ShortMethodName" />
-        <exclude name="ShortClassName" />
-        <exclude name="AvoidFieldNameMatchingMethodName" />
-        <exclude name="AbstractNaming" />
+    <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/>
+        <exclude name="UseConcurrentHashMap"/>
     </rule>
 
-    <rule ref="rulesets/java/optimizations.xml">
-        <exclude name="AvoidInstantiatingObjectsInLoops" />
+    <rule ref="category/java/performance.xml">
+        <exclude name="AvoidInstantiatingObjectsInLoops"/>
     </rule>
 
-    <rule ref="rulesets/java/strictexception.xml" />
+    <rule ref="category/java/security.xml"/>
 
-    <rule ref="rulesets/java/strings.xml">
-        <exclude name="AvoidDuplicateLiterals" />
-        <exclude name="InefficientEmptyStringCheck" />
-    </rule>
-    <rule ref="rulesets/java/strings.xml/AvoidDuplicateLiterals">
-        <properties>
-            <property name="skipAnnotations" value="true" />
-        </properties>
-    </rule>
-
-    <rule ref="rulesets/java/sunsecure.xml" />
-
-    <rule ref="rulesets/java/typeresolution.xml" />
-
-    <rule ref="rulesets/java/unnecessary.xml" />
-
-    <rule ref="rulesets/java/unusedcode.xml" />
+    <rule ref="category/pom/errorprone.xml"/>
 
 </ruleset>
