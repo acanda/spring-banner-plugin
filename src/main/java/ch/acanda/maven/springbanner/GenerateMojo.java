@@ -12,14 +12,10 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.joining;
@@ -105,8 +101,7 @@ public class GenerateMojo extends AbstractMojo {
     }
 
     private String generateBanner() throws IOException, MojoFailureException {
-        final InputStream fontStream = getFontFileStream();
-        final String rawBanner = FigletFont.convertOneLine(fontStream, text);
+        final String rawBanner = FigletFont.convertOneLine(getFontFileStream(), text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
@@ -143,33 +138,19 @@ public class GenerateMojo extends AbstractMojo {
         }
         final InputStream stream = GenerateMojo.class.getResourceAsStream("/" + font + ".flf");
         if (stream == null) {
-            try {
-                final String fonts = Files.walk(getRootResource(), 1)
-                                          .filter(GenerateMojo::isReadableFont)
-                                          .map(path -> path.getFileName().toString())
-                                          .map(name -> name.substring(0, name.length() - 4))
-                                          .collect(joining(", "));
+            try (RootPath rootPath = new RootPath()) {
+                final String fonts = rootPath.walkReadableFiles(".flf")
+                                             .map(path -> path.getFileName().toString())
+                                             .map(name -> name.substring(0, name.length() - 4))
+                                             .collect(joining(", "));
                 final String msg = "Built-in font %s does not exist. Available fonts: %s.";
                 throw new MojoFailureException(String.format(msg, font, fonts));
 
-            } catch (final IOException | URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 throw new MojoFailureException("Built-in font " + font + " does not exist.", e);
             }
         }
         return stream;
-    }
-
-    private static Path getRootResource() throws URISyntaxException, IOException {
-        final URI uri = GenerateMojo.class.getResource("/condensed.flf").toURI();
-        if (uri.getScheme().equals("jar")) {
-            final FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-            return fileSystem.getPath("/");
-        }
-        return Paths.get(uri).getParent();
-    }
-
-    private static boolean isReadableFont(final Path path) {
-        return path.toString().endsWith(".flf") && Files.isReadable(path) && Files.isRegularFile(path);
     }
 
     private void writeBannerFile(final String banner) throws IOException {

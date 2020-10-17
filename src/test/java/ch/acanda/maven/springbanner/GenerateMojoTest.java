@@ -2,7 +2,6 @@ package ch.acanda.maven.springbanner;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -15,12 +14,13 @@ import java.nio.file.Paths;
 import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.FONT_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class GenerateMojoTest {
 
     @Test
-    public void generateSimpleBanner(@TempDir final Path folder) throws Exception {
+    public void generateSimpleBanner(@TempDir final Path folder) throws MojoFailureException, IOException {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "Hello, World!",
@@ -37,7 +37,7 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithInfo(@TempDir final Path folder) throws Exception {
+    public void generateBannerWithInfo(@TempDir final Path folder) throws MojoFailureException, IOException {
         final Path bannerFile = folder.resolve("banner.txt");
         final MavenProject project = new MavenProject();
         project.setVersion("1.2.3");
@@ -56,7 +56,7 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithColor(@TempDir final Path folder) throws Exception {
+    public void generateBannerWithColor(@TempDir final Path folder) throws MojoFailureException, IOException {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "Hello, World!",
@@ -73,7 +73,7 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithCustomFontFile(@TempDir final Path folder) throws Exception {
+    public void generateBannerWithCustomFontFile(@TempDir final Path folder) throws MojoFailureException, IOException {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "Hello, World!",
@@ -90,7 +90,7 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) throws Exception {
+    public void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "Hello, World!",
@@ -107,7 +107,7 @@ public class GenerateMojoTest {
     }
 
     @Test
-    public void generateBannerWithMissingBuiltInFont(@TempDir final Path folder) throws Exception {
+    public void generateBannerWithMissingBuiltInFont(@TempDir final Path folder) {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "Hello, World!",
@@ -123,8 +123,9 @@ public class GenerateMojoTest {
     }
 
     private void assertBanner(final Path generatedFile, final String expectedFile) throws IOException {
-        final InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile);
-        Assertions.assertThat(expectedFileStream).hasBinaryContent(Files.readAllBytes(generatedFile));
+        try (InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile)) {
+            assertThat(expectedFileStream).hasBinaryContent(Files.readAllBytes(generatedFile));
+        }
     }
 
 }
