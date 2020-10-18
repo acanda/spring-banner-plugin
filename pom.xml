@@ -233,6 +233,7 @@
                             <useReleaseProfile>false</useReleaseProfile>
                             <releaseProfiles>release</releaseProfiles>
                             <goals>deploy</goals>
+                            <tagNameFormat>release/@{project.version}</tagNameFormat>
                         </configuration>
                     </plugin>
                 </plugins>
