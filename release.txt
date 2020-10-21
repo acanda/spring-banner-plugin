@@ -2,5 +2,5 @@ ssh-add ~/.ssh/id_rsa_git
 mvn -Prelease -s .mvn/settings.xml "-Dossrh.password=..." "-Dgpg.password=..." "-Dgpg.homedir=/Users/user/.gnupg" release:clean release:prepare
 mvn -Prelease -s .mvn/settings.xml "-Dossrh.password=..." "-Dgpg.password=..." "-Dgpg.homedir=/Users/user/.gnupg" release:perform
 
--> immediately: https://oss.sonatype.org/content/repositories/releases/ch/acanda/maven/spring-banner-plugin/
--> after 2h: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22ch.acanda.maven%22%20AND%20a%3A%22spring-banner-plugin%22
+-> Automatically stages and releases the plugin. The plugin is not visible in the staging repository on https://oss.sonatype.org.
+-> After 2h: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22ch.acanda.maven%22%20AND%20a%3A%22spring-banner-plugin%22
