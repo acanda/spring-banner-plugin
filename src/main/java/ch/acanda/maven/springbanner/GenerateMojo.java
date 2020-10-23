@@ -1,6 +1,7 @@
 package ch.acanda.maven.springbanner;
 
-import com.github.lalyos.jfiglet.FigletFont;
+import com.github.dtmo.jfiglet.FigFont;
+import com.github.dtmo.jfiglet.FigletRenderer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -100,8 +101,9 @@ public class GenerateMojo extends AbstractMojo {
         }
     }
 
-    private String generateBanner() throws IOException, MojoFailureException {
-        final String rawBanner = FigletFont.convertOneLine(getFontFileStream(), text);
+    private String generateBanner() throws MojoFailureException {
+        final FigletRenderer renderer = new FigletRenderer(getFont());
+        final String rawBanner = renderer.renderText(text);
         final String[] lines = rawBanner.split("\n");
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
@@ -127,30 +129,37 @@ public class GenerateMojo extends AbstractMojo {
         return banner.toString();
     }
 
-    private InputStream getFontFileStream() throws MojoFailureException {
+    private FigFont getFont() throws MojoFailureException {
         if (font.startsWith(FONT_PREFIX_FILE)) {
             final Path path = Paths.get(font.substring(FONT_PREFIX_FILE.length()));
-            try {
-                return Files.newInputStream(path);
+            try (InputStream stream = Files.newInputStream(path)) {
+                return FigFont.loadFigFont(stream);
             } catch (final IOException e) {
                 throw new MojoFailureException("Font file " + path + " does not exist.", e);
             }
         }
-        final InputStream stream = GenerateMojo.class.getResourceAsStream("/" + font + ".flf");
-        if (stream == null) {
-            try (RootPath rootPath = new RootPath()) {
-                final String fonts = rootPath.walkReadableFiles(".flf")
-                                             .map(path -> path.getFileName().toString())
-                                             .map(name -> name.substring(0, name.length() - 4))
-                                             .collect(joining(", "));
-                final String msg = "Built-in font %s does not exist. Available fonts: %s.";
-                throw new MojoFailureException(String.format(msg, font, fonts));
-
-            } catch (IOException | URISyntaxException e) {
-                throw new MojoFailureException("Built-in font " + font + " does not exist.", e);
+        try (InputStream stream = GenerateMojo.class.getResourceAsStream("/" + font + ".flf")) {
+            if (stream == null) {
+                throw createMissingFontException(null);
             }
+            return FigFont.loadFigFont(stream);
+        } catch (final IOException e) {
+            throw createMissingFontException(e);
         }
-        return stream;
+    }
+
+    private MojoFailureException createMissingFontException(final Throwable cause) {
+        try (RootPath rootPath = new RootPath()) {
+            final String fonts = rootPath.walkReadableFiles(".flf")
+                                         .map(path -> path.getFileName().toString())
+                                         .map(name -> name.substring(0, name.length() - 4))
+                                         .collect(joining(", "));
+            final String msg = "Built-in font %s does not exist. Available fonts: %s.";
+            return new MojoFailureException(String.format(msg, font, fonts), cause);
+
+        } catch (IOException | URISyntaxException e) {
+            return new MojoFailureException("Built-in font " + font + " does not exist.", e);
+        }
     }
 
     private void writeBannerFile(final String banner) throws IOException {
