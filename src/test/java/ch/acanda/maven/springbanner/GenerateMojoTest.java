@@ -2,11 +2,13 @@ package ch.acanda.maven.springbanner;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -123,8 +125,10 @@ public class GenerateMojoTest {
     }
 
     private void assertBanner(final Path generatedFile, final String expectedFile) throws IOException {
-        try (InputStream expectedFileStream = GenerateMojoTest.class.getResourceAsStream(expectedFile)) {
-            assertThat(expectedFileStream).hasBinaryContent(Files.readAllBytes(generatedFile));
+        try (InputStream stream = GenerateMojoTest.class.getResourceAsStream(expectedFile)) {
+            final String generatedBanner = new String(Files.readAllBytes(generatedFile), StandardCharsets.UTF_8);
+            final String expectedBanner = IOUtil.toString(stream, "UTF-8");
+            assertThat("\n" + generatedBanner).isEqualTo("\n" + expectedBanner);
         }
     }
 
