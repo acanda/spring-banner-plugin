@@ -1,5 +1,5 @@
 = Spring Banner Plugin
-:plugin-version: 1.1
+:plugin-version: 1.2
 :idprefix:
 :idseparator: -
 
@@ -7,15 +7,14 @@ The Spring Banner Plugin is a Maven plugin generating the banner that is printed
 
 [source,subs="attributes+"]
 ----
- ____                _                 ____
-/ ___|  _ __   _ __ (_) _ __    __ _  | __ )   __ _  _ __   _ __    ___  _ __
-\___ \ | '_ \ | '__|| || '_ \  / _` | |  _ \  / _` || '_ \ | '_ \  / _ \| '__|
- ___) || |_) || |   | || | | || (_| | | |_) || (_| || | | || | | ||  __/| |
-|____/ | .__/ |_|   |_||_| |_| \__, | |____/  \__,_||_| |_||_| |_| \___||_|
-       |_|                     |___/
+ ____             _             ____
+/ ___| _ __  _ __(_)_ __   __ _| __ )  __ _ _ __  _ __   ___ _ __
+\___ \| '_ \| '__| | '_ \ / _` |  _ \ / _` | '_ \| '_ \ / _ \ '__|
+ ___) | |_) | |  | | | | | (_| | |_) | (_| | | | | | | |  __/ |
+|____/| .__/|_|  |_|_| |_|\__, |____/ \__,_|_| |_|_| |_|\___|_|
+      |_|                 |___/
 Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
 ----
-
 
 == Usage
 
@@ -52,7 +51,6 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
 ----
 <1> The default phase is `generate-resources`. This can be omitted unless you want to generate the banner in another phase.
 <2> All configuration parameters are optional. The values in this example are the default values.
-
 
 === Configuration Parameters
 
@@ -105,9 +103,8 @@ Property: `banner.color`
 
 == Build Status
 
-image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=master["Build Status", link="https://travis-ci.org/acanda/spring-banner-plugin"]
-image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=master"]
-
+image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=master["Build Status",link="https://travis-ci.org/acanda/spring-banner-plugin"]
+image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=master["Coverage Status",link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=master"]
 
 == License
 
