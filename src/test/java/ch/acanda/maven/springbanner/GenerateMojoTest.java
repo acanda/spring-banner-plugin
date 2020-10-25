@@ -121,7 +121,10 @@ public class GenerateMojoTest {
                                                    COLOR_DEFAULT_VALUE);
 
         assertThatThrownBy(mojo::execute).isExactlyInstanceOf(MojoFailureException.class)
-                                         .hasMessage("Built-in font foo does not exist. Available fonts: condensed.");
+                                         .hasMessage("The built-in font \"foo\" does not exist. Available fonts:"
+                                                     + " banner, big, block, bubble, digital, ivrit, lean, mini,"
+                                                     + " mnemonic, script, shadow, slant, small, smscript, smshadow,"
+                                                     + " smslant, standard, term.");
     }
 
     private void assertBanner(final Path generatedFile, final String expectedFile) throws IOException {

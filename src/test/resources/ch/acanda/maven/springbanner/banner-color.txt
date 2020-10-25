@@ -1,6 +1,6 @@
-${AnsiColor.RED} _   _      _ _         __        __         _     _ _
-${AnsiColor.RED}| | | | ___| | | ___    \ \      / /__  _ __| | __| | |
-${AnsiColor.RED}| |_| |/ _ \ | |/ _ \    \ \ /\ / / _ \| '__| |/ _` | |
-${AnsiColor.RED}|  _  |  __/ | | (_) |    \ V  V / (_) | |  | | (_| |_|
-${AnsiColor.RED}|_| |_|\___|_|_|\___( )    \_/\_/ \___/|_|  |_|\__,_(_)
-${AnsiColor.RED}                    |/${AnsiColor.DEFAULT}
+${AnsiColor.RED}  _   _      _ _         __        __         _     _ _
+${AnsiColor.RED} | | | | ___| | | ___    \ \      / /__  _ __| | __| | |
+${AnsiColor.RED} | |_| |/ _ \ | |/ _ \    \ \ /\ / / _ \| '__| |/ _` | |
+${AnsiColor.RED} |  _  |  __/ | | (_) |    \ V  V / (_) | |  | | (_| |_|
+${AnsiColor.RED} |_| |_|\___|_|_|\___( )    \_/\_/ \___/|_|  |_|\__,_(_)
+${AnsiColor.RED}                     |/${AnsiColor.DEFAULT}
