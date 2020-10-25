@@ -21,8 +21,9 @@ public class RootPath implements AutoCloseable {
 
     private FileSystem fileSystem;
 
-    public Stream<Path> walkReadableFiles(final String extension) throws IOException, URISyntaxException {
-        return Files.walk(getRootResource(), 1)
+    public Stream<Path> walkReadableFiles(final Class<?> resourceClass,
+                                          final String extension) throws IOException, URISyntaxException {
+        return Files.walk(getRootResource(resourceClass), 1)
                     .filter(path -> isReadableFont(path, extension));
     }
 
@@ -33,8 +34,8 @@ public class RootPath implements AutoCloseable {
         }
     }
 
-    private Path getRootResource() throws IOException, URISyntaxException {
-        final URI uri = RootPath.class.getResource("/condensed.flf").toURI();
+    private Path getRootResource(final Class<?> resourceClass) throws IOException, URISyntaxException {
+        final URI uri = resourceClass.getResource("/standard.flf").toURI();
         if ("jar".equals(uri.getScheme())) {
             fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
             return fileSystem.getPath("/");
