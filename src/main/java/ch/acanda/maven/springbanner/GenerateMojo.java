@@ -3,7 +3,6 @@ package ch.acanda.maven.springbanner;
 import com.github.dtmo.jfiglet.FigFont;
 import com.github.dtmo.jfiglet.FigFontResources;
 import com.github.dtmo.jfiglet.FigletRenderer;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -107,14 +106,11 @@ public class GenerateMojo extends AbstractMojo {
     private String generateBanner() throws MojoFailureException {
         final FigletRenderer renderer = new FigletRenderer(getFont());
         final String rawBanner = renderer.renderText(text);
-        final String[] lines = rawBanner.split("\n");
+        final String[] lines = Whitespace.strip(rawBanner);
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
-        for (int i = 0; i < lines.length; i++) {
-            final String line = StringUtils.stripEnd(lines[i], " ");
-            if (i > 0 || !line.isEmpty()) {
-                banner.append('\n');
-            }
+        for (final String line : lines) {
+            banner.append('\n');
             if (!isDefaultColor) {
                 Color.nameFromTagValue(color)
                      .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
