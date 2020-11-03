@@ -111,7 +111,7 @@ public class GenerateMojo extends AbstractMojo {
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
         for (int i = 0; i < lines.length; i++) {
-            String line = StringUtils.stripEnd(lines[i], " ");
+            final String line = StringUtils.stripEnd(lines[i], " ");
             if (i > 0 || !line.isEmpty()) {
                 banner.append('\n');
             }
