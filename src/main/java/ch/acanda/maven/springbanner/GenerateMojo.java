@@ -111,14 +111,15 @@ public class GenerateMojo extends AbstractMojo {
         final StringBuilder banner = new StringBuilder(32);
         final boolean isDefaultColor = Color.DEFAULT.getTagValue().equals(color);
         for (int i = 0; i < lines.length; i++) {
-            if (i > 0) {
+            String line = StringUtils.stripEnd(lines[i], " ");
+            if (i > 0 || !line.isEmpty()) {
                 banner.append('\n');
             }
             if (!isDefaultColor) {
                 Color.nameFromTagValue(color)
                      .ifPresent(name -> banner.append("${AnsiColor.").append(name).append('}'));
             }
-            banner.append(StringUtils.stripEnd(lines[i], " "));
+            banner.append(line);
         }
         if (!isDefaultColor) {
             banner.append("${AnsiColor.DEFAULT}");
