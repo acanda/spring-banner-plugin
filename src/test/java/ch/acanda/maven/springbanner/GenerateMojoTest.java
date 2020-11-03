@@ -92,6 +92,22 @@ public class GenerateMojoTest {
     }
 
     @Test
+    public void generateBannerWithStrippedWhitespace(@TempDir final Path folder) throws MojoFailureException, IOException {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "<->",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   false,
+                                                   INFO_DEFAULT_VALUE,
+                                                   FONT_DEFAULT_VALUE,
+                                                   COLOR_DEFAULT_VALUE);
+
+        mojo.execute();
+        assertBanner(bannerFile, "banner-stripped.txt");
+    }
+
+    @Test
     public void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) {
         final Path bannerFile = folder.resolve("banner.txt");
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
@@ -131,7 +147,7 @@ public class GenerateMojoTest {
         try (InputStream stream = GenerateMojoTest.class.getResourceAsStream(expectedFile)) {
             final String generatedBanner = new String(Files.readAllBytes(generatedFile), StandardCharsets.UTF_8);
             final String expectedBanner = IOUtil.toString(stream, "UTF-8");
-            assertThat("\n" + generatedBanner).isEqualTo("\n" + expectedBanner);
+            assertThat(generatedBanner).isEqualTo(expectedBanner);
         }
     }
 
