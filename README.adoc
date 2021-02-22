@@ -42,7 +42,7 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
                 <includeInfo>true</includeInfo>
                 <info>Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
                 <version>${project.version}</version>
-                <font>condensed</font>
+                <font>standard</font>
                 <color>default</color>
             </configuration>
         </plugin>
