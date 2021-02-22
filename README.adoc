@@ -103,8 +103,9 @@ Property: `banner.color`
 
 == Build Status
 
-image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=master["Build Status",link="https://travis-ci.org/acanda/spring-banner-plugin"]
-image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=master["Coverage Status",link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=master"]
+image:https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml/badge.svg["GitHub Actions Build Status",link="https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml"]
+image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=main["Travis CI Build Status",link="https://travis-ci.org/acanda/spring-banner-plugin"]
+image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=main["Coverage Status",link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=main"]
 
 == License
 
