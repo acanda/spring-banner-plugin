@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.dtmo.jfiglet</groupId>
             <artifactId>jfiglet</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
