@@ -132,7 +132,7 @@ public class GenerateMojo extends AbstractMojo {
     private FigFont getFont() throws MojoFailureException {
         if (font.startsWith(FONT_PREFIX_FILE)) {
             final Path path = Paths.get(font.substring(FONT_PREFIX_FILE.length()));
-            try (InputStream stream = new PrintDirectionInterceptor(Files.newInputStream(path))) {
+            try (InputStream stream = Files.newInputStream(path)) {
                 return FigFont.loadFigFont(stream);
             } catch (final IOException e) {
                 throw new MojoFailureException("Font file " + path + " does not exist.", e);
