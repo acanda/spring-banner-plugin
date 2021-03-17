@@ -40,7 +40,7 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
                 <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                 <filename>banner.txt</filename>
                 <includeInfo>true</includeInfo>
-                <info>Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
+                <info>Version: ${application.version:${project.version}}, Server: ${server.address:localhost}:${server.port:8080}, Active Profiles: ${spring.profiles.active:none}</info>
                 <version>${project.version}</version>
                 <font>standard</font>
                 <color>default</color>
@@ -78,7 +78,7 @@ Property: `banner.includeInfo`
 
 info::
 The line to print under the banner when `includeInfo` is `true`. +
-Default value: `Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}` +
+Default value: `Version: ${application.version:${project.version}}, Server: ${server.address:localhost}:${server.port:8080}, Active Profiles: ${spring.profiles.active:none}` +
 Property: `banner.info`
 
 font::
