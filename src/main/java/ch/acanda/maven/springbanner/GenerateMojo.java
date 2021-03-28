@@ -121,7 +121,7 @@ public class GenerateMojo extends AbstractMojo {
             banner.append("${AnsiColor.DEFAULT}");
         }
         if (includeInfo) {
-            info = info == null ? null : info.replaceAll("\\$\\{project\\.version\\}", project.getVersion());
+            info = info == null ? null : info.replaceAll("\\$\\{project\\.version}", project.getVersion());
             banner.append('\n').append(info);
         }
         banner.append('\n');

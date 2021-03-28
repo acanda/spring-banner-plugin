@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0">
 
-    <!-- last updated for PMD 6.32.0 -->
+    <!-- last updated for PMD 6.33.0 -->
 
     <description>PMD rules for spring-banner-plugin</description>
 
