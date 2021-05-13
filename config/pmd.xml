@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="eclipse-pmd rules"
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="spring-banner-plugin rules"
          xsi:noNamespaceSchemaLocation="http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0">
