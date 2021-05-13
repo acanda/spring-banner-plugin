@@ -1,0 +1,38 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.apache.maven:maven-plugin-api
+    versions:
+    - "> 3.3.9"
+  - dependency-name: org.apache.maven.plugin-tools:maven-plugin-annotations
+    versions:
+    - "> 3.4"
+  - dependency-name: com.puppycrawl.tools:checkstyle
+    versions:
+    - "8.41"
+    - 8.41.1
+  - dependency-name: net.sourceforge.pmd:pmd-xml
+    versions:
+    - 6.31.0
+    - 6.32.0
+  - dependency-name: net.sourceforge.pmd:pmd-core
+    versions:
+    - 6.32.0
+  - dependency-name: net.sourceforge.pmd:pmd-java
+    versions:
+    - 6.31.0
+    - 6.32.0
+  - dependency-name: com.github.dtmo.jfiglet:jfiglet
+    versions:
+    - 1.0.1
+  - dependency-name: org.junit.jupiter:junit-jupiter-engine
+    versions:
+    - 5.7.1
+  - dependency-name: org.apache.maven:maven-core
+    versions:
+    - 3.6.3
