@@ -23,7 +23,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <gpg.keyname>44F947ED</gpg.keyname>
+                <gpg.keyname>53CD43B2</gpg.keyname>
                 <gpg.passphrase>${gpg.password}</gpg.passphrase>
                 <gpg.executable>gpg2</gpg.executable>
                 <gpg.defaultKeyring>false</gpg.defaultKeyring>
