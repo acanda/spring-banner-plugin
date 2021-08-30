@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RootPathTest {
+class RootPathTest {
 
     @Test
-    public void listBuiltInFonts() throws IOException, URISyntaxException {
+    void listBuiltInFonts() throws IOException, URISyntaxException {
         try (RootPath rootPath = new RootPath()) {
             final Stream<String> rootFiles = rootPath.walkReadableFiles(FigFontResources.class, ".flf")
                                                      .map(p -> p.getFileName().toString());
