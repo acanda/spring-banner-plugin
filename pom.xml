@@ -14,7 +14,9 @@
     <url>https://github.com/acanda/spring-banner-plugin</url>
 
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
+        <java.version>11</java.version>
+        <maven.version>3.8.2</maven.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -27,12 +29,12 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.8.2</version>
+            <version>${maven.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.8.2</version>
+            <version>${maven.version}</version>
             <exclusions>
                 <!-- guava 25.1-android has vulnerabilities: CVE-2020-8908 -->
                 <exclusion>
@@ -89,10 +91,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
 
     <build>
         <plugins>
@@ -206,6 +204,30 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.3</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
