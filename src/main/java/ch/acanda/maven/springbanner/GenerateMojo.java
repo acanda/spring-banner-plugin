@@ -70,6 +70,7 @@ public class GenerateMojo extends AbstractMojo {
     /**
      * This constructor can be used to set all the parameters of the mojo.
      */
+    @SuppressWarnings("java:S107")
     public GenerateMojo(final MavenProject project,
                         final String text,
                         final File outputDirectory,
@@ -121,7 +122,7 @@ public class GenerateMojo extends AbstractMojo {
             banner.append("${AnsiColor.DEFAULT}");
         }
         if (includeInfo) {
-            info = info == null ? null : info.replaceAll("\\$\\{project\\.version}", project.getVersion());
+            info = info == null ? null : info.replace("${project.version}", project.getVersion());
             banner.append('\n').append(info);
         }
         banner.append('\n');

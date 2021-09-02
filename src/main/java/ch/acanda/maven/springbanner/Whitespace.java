@@ -17,12 +17,13 @@ final class Whitespace {
      * </ul>
      */
     public static String[] strip(final String banner) {
-        final String[] lines = stripEnd(banner).split("\\s*\n");
-        final int firstLine = firstNonEmptyLine(lines);
-        final int lastLine = lastNonEmptyLine(lines);
+        final String[] lines = stripEnd(banner).split("\n");
+        final long firstLine = firstNonEmptyLine(lines);
+        final long lastLine = lastNonEmptyLine(lines);
         final int stripStart = countStrippableWhitespaceAtStart(lines);
         return Stream.of(lines)
                      .skip(firstLine)
+                     .map(Whitespace::stripEnd)
                      .map(line -> line.substring(Math.min(line.length(), stripStart)))
                      .limit(lastLine - firstLine + 1)
                      .toArray(String[]::new);
