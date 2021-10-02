@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.1.1-jre</version>
+            <version>31.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -78,25 +78,25 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.20.2</version>
+            <version>3.21.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -189,17 +189,17 @@
                     <dependency>
                         <groupId>net.sourceforge.pmd</groupId>
                         <artifactId>pmd-core</artifactId>
-                        <version>6.38.0</version>
+                        <version>6.39.0</version>
                     </dependency>
                     <dependency>
                         <groupId>net.sourceforge.pmd</groupId>
                         <artifactId>pmd-java</artifactId>
-                        <version>6.38.0</version>
+                        <version>6.39.0</version>
                     </dependency>
                     <dependency>
                         <groupId>net.sourceforge.pmd</groupId>
                         <artifactId>pmd-xml</artifactId>
-                        <version>6.38.0</version>
+                        <version>6.39.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -207,7 +207,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.3.1</version>
+                <version>6.3.2</version>
                 <executions>
                     <execution>
                         <goals>
