@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
 
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public class GenerateMojo extends AbstractMojo {
 
     public static final String TEXT_DEFAULT_VALUE = "${project.name}";
