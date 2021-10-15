@@ -15,7 +15,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <maven.version>3.8.2</maven.version>
+        <maven.version>3.8.3</maven.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -144,7 +144,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>9.0</version>
+                        <version>9.0.1</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -207,7 +207,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.3.1</version>
+                <version>6.4.1</version>
                 <executions>
                     <execution>
                         <goals>
