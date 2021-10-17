@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.acanda.maven</groupId>
@@ -136,71 +137,17 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>9.0.1</version>
-                    </dependency>
-                </dependencies>
+                <groupId>ch.acanda.maven</groupId>
+                <artifactId>code-analysis-maven-plugin</artifactId>
+                <version>0.1.0</version>
                 <executions>
                     <execution>
-                        <id>checkstyle</id>
+                        <id>code-analysis</id>
                         <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <configLocation>${project.basedir}/config/checkstyle.xml</configLocation>
-                            <sourceDirectories>
-                                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-                            </sourceDirectories>
-                            <violationSeverity>warning</violationSeverity>
-                            <logViolationsToConsole>true</logViolationsToConsole>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version>
-                <executions>
-                    <execution>
-                        <id>pmd</id>
-                        <goals>
-                            <goal>check</goal>
+                            <goal>analyse</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <rulesets>
-                        <ruleset>${project.basedir}/config/pmd.xml</ruleset>
-                    </rulesets>
-                    <includeTests>true</includeTests>
-                    <printFailingErrors>true</printFailingErrors>
-                    <linkXRef>false</linkXRef>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sourceforge.pmd</groupId>
-                        <artifactId>pmd-core</artifactId>
-                        <version>6.39.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>net.sourceforge.pmd</groupId>
-                        <artifactId>pmd-java</artifactId>
-                        <version>6.39.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>net.sourceforge.pmd</groupId>
-                        <artifactId>pmd-xml</artifactId>
-                        <version>6.39.0</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
