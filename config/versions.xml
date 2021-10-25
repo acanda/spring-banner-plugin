@@ -1,0 +1,13 @@
+<!--
+This is a rules configuration for the versions-maven-plugin that you can use to
+check if new versions of dependencies and plugins are available.
+-->
+<ruleset comparisonMethod="maven"
+         xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 https://www.mojohaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
+  <ignoreVersions>
+    <ignoreVersion type="regex">.*[.-]([Aa]lpha|[Bb]eta|M|[Rr][Cc]|preview)[.-]?\d*</ignoreVersion>
+    <ignoreVersion type="regex">\d+</ignoreVersion>
+  </ignoreVersions>
+</ruleset>
