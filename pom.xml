@@ -139,7 +139,7 @@
             <plugin>
                 <groupId>ch.acanda.maven</groupId>
                 <artifactId>code-analysis-maven-plugin</artifactId>
-                <version>0.5.0</version>
+                <version>0.6.0</version>
                 <executions>
                     <execution>
                         <id>code-analysis</id>
