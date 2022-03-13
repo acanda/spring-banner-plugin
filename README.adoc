@@ -44,6 +44,7 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
                 <version>${project.version}</version>
                 <font>standard</font>
                 <color>default</color>
+                <useNonBrakingSpace>false</useNonBrakingSpace>
             </configuration>
         </plugin>
     </plugins>
@@ -101,6 +102,11 @@ The color of the banner. Valid values are: `default`, `black`, `red`, `green`,
 and `bright white`. +
 Default value: `default` +
 Property: `banner.color`
+
+useNonBrakingSpace::
+If set to `true`, then all spaces are replaced with non-breaking spaces. +
+DefaultValue: `false` +
+Property: `banner.useNonBrakingSpace`
 
 == Build Status
 

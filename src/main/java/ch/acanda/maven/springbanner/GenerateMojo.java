@@ -31,6 +31,7 @@ public class GenerateMojo extends AbstractMojo {
     public static final String FILENAME_DEFAULT_VALUE = "banner.txt";
     public static final String INCLUDE_INFO_DEFAULT_VALUE = "true";
     public static final String COLOR_DEFAULT_VALUE = "default";
+    public static final String USE_NBSP_DEFAULT_VALUE = "false";
     public static final String FONT_DEFAULT_VALUE = "standard";
     public static final String INFO_DEFAULT_VALUE =
             "Version: ${application.version:${project.version}}, "
@@ -63,6 +64,9 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "banner.color", defaultValue = COLOR_DEFAULT_VALUE)
     private String color;
 
+    @Parameter(property = "banner.useNonBreakingSpace", defaultValue = USE_NBSP_DEFAULT_VALUE)
+    private boolean useNbsp;
+
     public GenerateMojo() {
         // this constructor is used by maven to create the mojo
     }
@@ -78,7 +82,8 @@ public class GenerateMojo extends AbstractMojo {
                         final boolean includeInfo,
                         final String info,
                         final String font,
-                        final String color) {
+                        final String color,
+                        final boolean useNbsp) {
         this.project = project;
         this.text = text;
         this.outputDirectory = outputDirectory;
@@ -87,6 +92,7 @@ public class GenerateMojo extends AbstractMojo {
         this.info = info;
         this.font = font;
         this.color = color == null ? Color.DEFAULT.name() : color;
+        this.useNbsp = useNbsp;
     }
 
     /**
@@ -126,8 +132,16 @@ public class GenerateMojo extends AbstractMojo {
             banner.append('\n').append(info);
         }
         banner.append('\n');
-        getLog().debug('\n' + banner.toString());
-        return banner.toString();
+        String bannerAsString = banner.toString();
+        if (useNbsp) {
+            bannerAsString = replaceSpaceWithNbsp(bannerAsString);
+        }
+        getLog().debug('\n' + bannerAsString);
+        return bannerAsString;
+    }
+
+    private String replaceSpaceWithNbsp(final String banner) {
+        return banner.replace(' ', '\u00a0');
     }
 
     private FigFont getFont() throws MojoFailureException {

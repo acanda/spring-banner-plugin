@@ -30,7 +30,8 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    FONT_DEFAULT_VALUE,
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         mojo.execute();
 
@@ -49,7 +50,8 @@ class GenerateMojoTest {
                                                    true,
                                                    INFO_DEFAULT_VALUE,
                                                    FONT_DEFAULT_VALUE,
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         mojo.execute();
 
@@ -66,7 +68,8 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    FONT_DEFAULT_VALUE,
-                                                   "red");
+                                                   "red",
+                                                   false);
 
         mojo.execute();
 
@@ -83,7 +86,8 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    "file:src/test/resources/chunky.flf",
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         mojo.execute();
 
@@ -100,11 +104,31 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    FONT_DEFAULT_VALUE,
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         mojo.execute();
         assertBanner(bannerFile, "banner-stripped.txt");
     }
+
+    @Test
+    void generateBannerWithNonBreakingSpace(@TempDir final Path folder) throws MojoFailureException, IOException {
+        final Path bannerFile = folder.resolve("banner.txt");
+        final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
+                                                   "Hello, World!",
+                                                   bannerFile.getParent().toFile(),
+                                                   bannerFile.getFileName().toString(),
+                                                   true,
+                                                   INFO_DEFAULT_VALUE,
+                                                   FONT_DEFAULT_VALUE,
+                                                   COLOR_DEFAULT_VALUE,
+                                                   true);
+
+        mojo.execute();
+
+        assertBanner(bannerFile, "banner-nbsp.txt");
+    }
+
 
     @Test
     void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) {
@@ -116,7 +140,8 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    "file:src/test/resources/missing.flf",
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         final Path font = Paths.get("src/test/resources/missing.flf");
         assertThatThrownBy(mojo::execute).isExactlyInstanceOf(MojoFailureException.class)
@@ -133,7 +158,8 @@ class GenerateMojoTest {
                                                    false,
                                                    INFO_DEFAULT_VALUE,
                                                    "foo",
-                                                   COLOR_DEFAULT_VALUE);
+                                                   COLOR_DEFAULT_VALUE,
+                                                   false);
 
         assertThatThrownBy(mojo::execute).isExactlyInstanceOf(MojoFailureException.class)
                                          .hasMessage("The built-in font \"foo\" does not exist. Available fonts:"
