@@ -1,5 +1,7 @@
 package ch.acanda.maven.springbanner;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.stream.Stream;
 
 final class Whitespace {
@@ -62,7 +64,7 @@ final class Whitespace {
 
     private static int countStrippableWhitespaceAtStart(final String... lines) {
         return Stream.of(lines)
-                     .filter(org.apache.commons.lang3.StringUtils::isNotBlank)
+                     .filter(StringUtils::isNotBlank)
                      .mapToInt(Whitespace::countStrippableWhitespaceAtStart)
                      .min()
                      .orElse(0);
