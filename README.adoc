@@ -108,6 +108,10 @@ If set to `true`, then all spaces are replaced with non-breaking spaces. +
 DefaultValue: `false` +
 Property: `banner.useNonBrakingSpace`
 
+== Requirements
+
+You need to run Maven with Java 17 to use the plugin.
+
 == Build Status
 
 image:https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml/badge.svg["GitHub Actions Build Status",link="https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml"]
