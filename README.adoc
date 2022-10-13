@@ -115,7 +115,6 @@ You need to run Maven with Java 17 to use the plugin.
 == Build Status
 
 image:https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml/badge.svg["GitHub Actions Build Status",link="https://github.com/acanda/spring-banner-plugin/actions/workflows/build.yaml"]
-image:https://travis-ci.org/acanda/spring-banner-plugin.svg?branch=main["Travis CI Build Status",link="https://travis-ci.org/acanda/spring-banner-plugin"]
 image:https://coveralls.io/repos/github/acanda/spring-banner-plugin/badge.svg?branch=main["Coverage Status",link="https://coveralls.io/github/acanda/spring-banner-plugin?branch=main"]
 image:https://sonarcloud.io/api/project_badges/measure?project=acanda_spring-banner-plugin&metric=alert_status["Sonar Quality Gate Status",link="https://sonarcloud.io/dashboard?id=acanda_spring-banner-plugin"]
 image:https://sonarcloud.io/api/project_badges/measure?project=acanda_spring-banner-plugin&metric=security_rating["Sonar Security Rating",link="https://sonarcloud.io/component_measures?id=acanda_spring-banner-plugin&metric=Security&view=list"]
