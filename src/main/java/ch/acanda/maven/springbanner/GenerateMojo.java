@@ -20,9 +20,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.stream.Collectors.toList;
-
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true)
 public class GenerateMojo extends AbstractMojo {
 
@@ -170,7 +167,7 @@ public class GenerateMojo extends AbstractMojo {
             return rootPath.walkReadableFiles(FigFontResources.class, ".flf")
                            .map(path -> path.getFileName().toString())
                            .map(name -> name.substring(0, name.length() - 4))
-                           .collect(toList());
+                           .toList();
         } catch (IOException | URISyntaxException e) {
             throw new MojoFailureException("Cannot collect names of build-in fonts.", e);
         }
@@ -186,7 +183,7 @@ public class GenerateMojo extends AbstractMojo {
         final Path bannerFile = outputDirectory.toPath().resolve(filename);
         getLog().debug("Writing banner to file " + bannerFile);
         if (outputDirectory.exists() || outputDirectory.mkdirs()) {
-            Files.write(bannerFile, banner.getBytes(UTF_8));
+            Files.writeString(bannerFile, banner);
         } else {
             throw new IOException("Failed to create output directory " + outputDirectory);
         }
