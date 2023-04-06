@@ -41,10 +41,9 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
                 <filename>banner.txt</filename>
                 <includeInfo>true</includeInfo>
                 <info>Version: ${application.version:${project.version}}, Server: ${server.address:localhost}:${server.port:8080}, Active Profiles: ${spring.profiles.active:none}</info>
-                <version>${project.version}</version>
                 <font>standard</font>
                 <color>default</color>
-                <useNonBrakingSpace>false</useNonBrakingSpace>
+                <useNonBreakingSpace>false</useNonBreakingSpace>
             </configuration>
         </plugin>
     </plugins>
