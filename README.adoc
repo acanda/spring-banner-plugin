@@ -102,10 +102,10 @@ and `bright white`. +
 Default value: `default` +
 Property: `banner.color`
 
-useNonBrakingSpace::
+useNonBreakingSpace::
 If set to `true`, then all spaces are replaced with non-breaking spaces. +
 DefaultValue: `false` +
-Property: `banner.useNonBrakingSpace`
+Property: `banner.useNonBreakingSpace`
 
 == Requirements
 
