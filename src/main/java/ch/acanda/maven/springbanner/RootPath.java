@@ -2,8 +2,8 @@ package ch.acanda.maven.springbanner;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,27 +17,29 @@ import java.util.stream.Stream;
  * path is the root of the jar file. If the plugin is not in a jar file (e.g.
  * during development), then the root path is the working directory.
  */
-public class RootPath implements AutoCloseable {
+public class RootPath {
 
-    private FileSystem fileSystem;
+    private static final Object LOCK = new Object();
 
     public Stream<Path> walkReadableFiles(final Class<?> resourceClass,
-                                          final String extension) throws IOException, URISyntaxException {
+                                          final String extension) throws IOException {
         return Files.walk(getRootResource(resourceClass), 1)
                     .filter(path -> isReadableFont(path, extension));
     }
 
-    @Override
-    public void close() throws IOException {
-        if (fileSystem != null) {
-            fileSystem.close();
-        }
-    }
-
-    private Path getRootResource(final Class<?> resourceClass) throws IOException, URISyntaxException {
-        final URI uri = resourceClass.getResource("/standard.flf").toURI();
+    @SuppressWarnings("java:S2095")
+    private Path getRootResource(final Class<?> resourceClass) throws IOException {
+        final URI uri =  URI.create(resourceClass.getResource("/standard.flf").toString());
         if ("jar".equals(uri.getScheme())) {
-            fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            @SuppressWarnings("PMD.CloseResource")
+            FileSystem fileSystem;
+            synchronized (LOCK) {
+                try {
+                    fileSystem = FileSystems.getFileSystem(uri);
+                } catch (FileSystemNotFoundException e) {
+                    fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                }
+            }
             return fileSystem.getPath("/");
         }
         return Paths.get(uri).getParent();

@@ -13,7 +13,6 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -163,12 +162,13 @@ public class GenerateMojo extends AbstractMojo {
     }
 
     private List<String> getBuildInFonts() throws MojoFailureException {
-        try (RootPath rootPath = new RootPath()) {
+        try {
+            final RootPath rootPath = new RootPath();
             return rootPath.walkReadableFiles(FigFontResources.class, ".flf")
                            .map(path -> path.getFileName().toString())
                            .map(name -> name.substring(0, name.length() - 4))
                            .toList();
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             throw new MojoFailureException("Cannot collect names of build-in fonts.", e);
         }
     }
