@@ -1,5 +1,5 @@
 = Spring Banner Plugin
-:plugin-version: 1.5.2
+:plugin-version: 1.6.0
 :idprefix:
 :idseparator: -
 
@@ -17,6 +17,8 @@ Version: {plugin-version}, Server: localhost:8080, Active Profiles: none
 ----
 
 == Usage
+
+image::https://maven-badges.herokuapp.com/maven-central/ch.acanda.maven/spring-banner-plugin/badge.svg["Maven Central",link="https://search.maven.org/artifact/ch.acanda.maven/spring-banner-plugin"]
 
 [source,xml,subs="attributes+"]
 ----
