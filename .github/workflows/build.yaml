@@ -17,6 +17,11 @@ jobs:
           java-version: 17
           distribution: 'temurin'
           cache: 'maven'
+      - name: Cache OWASP database
+        uses: actions/cache@v3
+        with:
+          path: target/owasp/data
+          key: owasp-data
       - name: Build with Maven
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
