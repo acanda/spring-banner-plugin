@@ -123,9 +123,8 @@ public class GenerateMojo extends AbstractMojo {
         if (!isDefaultColor) {
             banner.append("${AnsiColor.DEFAULT}");
         }
-        if (includeInfo) {
-            info = info == null ? null : info.replace("${project.version}", project.getVersion());
-            banner.append('\n').append(info);
+        if (includeInfo && info != null) {
+            banner.append('\n').append(info.replace("${project.version}", project.getVersion()));
         }
         banner.append('\n');
         String bannerAsString = banner.toString();

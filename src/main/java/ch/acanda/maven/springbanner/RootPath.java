@@ -19,6 +19,8 @@ import java.util.stream.Stream;
  */
 public class RootPath {
 
+    private static final String JAR_URI_SCHEME = "jar";
+
     private static final Object LOCK = new Object();
 
     public Stream<Path> walkReadableFiles(final Class<?> resourceClass,
@@ -30,7 +32,7 @@ public class RootPath {
     @SuppressWarnings("java:S2095")
     private Path getRootResource(final Class<?> resourceClass) throws IOException {
         final URI uri =  URI.create(resourceClass.getResource("/standard.flf").toString());
-        if ("jar".equals(uri.getScheme())) {
+        if (JAR_URI_SCHEME.equals(uri.getScheme())) {
             @SuppressWarnings("PMD.CloseResource")
             FileSystem fileSystem;
             synchronized (LOCK) {

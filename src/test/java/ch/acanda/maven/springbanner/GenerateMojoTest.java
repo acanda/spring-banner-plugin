@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static ch.acanda.maven.springbanner.GenerateMojo.COLOR_DEFAULT_VALUE;
+import static ch.acanda.maven.springbanner.GenerateMojo.FILENAME_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.FONT_DEFAULT_VALUE;
 import static ch.acanda.maven.springbanner.GenerateMojo.INFO_DEFAULT_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,11 +21,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GenerateMojoTest {
 
+    public static final String DEFAULT_TEXT = "Hello, World!";
+
     @Test
     void generateSimpleBanner(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    false,
@@ -40,11 +43,11 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithInfo(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final MavenProject project = new MavenProject();
         project.setVersion("1.2.3");
         final GenerateMojo mojo = new GenerateMojo(project,
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    true,
@@ -60,9 +63,9 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithColor(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    false,
@@ -78,9 +81,9 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithCustomFontFile(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    false,
@@ -96,7 +99,7 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithStrippedWhitespace(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
                                                    "<->",
                                                    bannerFile.getParent().toFile(),
@@ -113,9 +116,9 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithNonBreakingSpace(@TempDir final Path folder) throws MojoFailureException, IOException {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    true,
@@ -132,9 +135,9 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithMissingCustomFontFile(@TempDir final Path folder) {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    false,
@@ -150,9 +153,9 @@ class GenerateMojoTest {
 
     @Test
     void generateBannerWithMissingBuiltInFont(@TempDir final Path folder) {
-        final Path bannerFile = folder.resolve("banner.txt");
+        final Path bannerFile = folder.resolve(FILENAME_DEFAULT_VALUE);
         final GenerateMojo mojo = new GenerateMojo(new MavenProject(),
-                                                   "Hello, World!",
+                                                   DEFAULT_TEXT,
                                                    bannerFile.getParent().toFile(),
                                                    bannerFile.getFileName().toString(),
                                                    false,
