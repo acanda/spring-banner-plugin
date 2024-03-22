@@ -41,7 +41,7 @@ public enum Color {
      * @param tagValue The value of the color tag.
      */
     public static Optional<Color> nameFromTagValue(final String tagValue) {
-        return Stream.of(Color.values())
+        return Stream.of(values())
                      .filter(c -> c.tagValue.equals(tagValue))
                      .findFirst();
     }
