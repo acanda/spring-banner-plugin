@@ -165,7 +165,7 @@
             <plugin>
                 <groupId>ch.acanda.maven</groupId>
                 <artifactId>code-analysis-maven-plugin</artifactId>
-                <version>1.6.1</version>
+                <version>1.7.0</version>
                 <executions>
                     <execution>
                         <id>code-analysis</id>
