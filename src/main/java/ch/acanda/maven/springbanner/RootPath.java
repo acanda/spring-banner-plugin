@@ -3,12 +3,14 @@ package ch.acanda.maven.springbanner;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 /**
@@ -21,7 +23,7 @@ public class RootPath {
 
     private static final String JAR_URI_SCHEME = "jar";
 
-    private static final Object LOCK = new Object();
+    private final ReentrantLock lock = new ReentrantLock();
 
     public Stream<Path> walkReadableFiles(final Class<?> resourceClass,
                                           final String extension) throws IOException {
@@ -31,16 +33,21 @@ public class RootPath {
 
     @SuppressWarnings("java:S2095")
     private Path getRootResource(final Class<?> resourceClass) throws IOException {
-        final URI uri =  URI.create(resourceClass.getResource("/standard.flf").toString());
+        final URI uri = URI.create(resourceClass.getResource("/standard.flf").toString());
         if (JAR_URI_SCHEME.equals(uri.getScheme())) {
             @SuppressWarnings("PMD.CloseResource")
             FileSystem fileSystem;
-            synchronized (LOCK) {
+            lock.lock();
+            try {
+                fileSystem = FileSystems.getFileSystem(uri);
+            } catch (FileSystemNotFoundException e) {
                 try {
-                    fileSystem = FileSystems.getFileSystem(uri);
-                } catch (FileSystemNotFoundException e) {
                     fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                } catch (FileSystemAlreadyExistsException fsaee) {
+                    fileSystem = FileSystems.getFileSystem(uri);
                 }
+            } finally {
+                lock.unlock();
             }
             return fileSystem.getPath("/");
         }
