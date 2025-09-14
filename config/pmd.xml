@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0">
 
-    <!-- last updated for PMD 6.38.0 -->
+    <!-- last updated for PMD 7.17.0 -->
 
     <description>PMD rules for spring-banner-plugin</description>
 
@@ -12,8 +12,6 @@
 
     <rule ref="category/java/bestpractices.xml">
         <exclude name="GuardLogStatement"/>
-        <exclude name="JUnitTestContainsTooManyAsserts"/>
-        <exclude name="JUnitTestsShouldIncludeAssert"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml">
