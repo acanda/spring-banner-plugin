@@ -46,7 +46,7 @@ final class Whitespace {
 
     private static int firstNonEmptyLine(final String... lines) {
         for (int i = 0; i < lines.length; i++) {
-            if (lines[i].length() > 0) {
+            if (!lines[i].isEmpty()) {
                 return i;
             }
         }
@@ -55,7 +55,7 @@ final class Whitespace {
 
     private static int lastNonEmptyLine(final String... lines) {
         for (int i = lines.length - 1; i >= 0; i--) {
-            if (lines[i].length() > 0) {
+            if (!lines[i].isEmpty()) {
                 return i;
             }
         }
