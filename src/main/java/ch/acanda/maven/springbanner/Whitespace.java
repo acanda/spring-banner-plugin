@@ -18,7 +18,7 @@ final class Whitespace {
      *     <li>removes all whitespace at the end of each line</li>
      * </ul>
      */
-    public static String[] strip(final String banner) {
+    static String[] strip(final String banner) {
         final String[] lines = stripEnd(banner).split("\n");
         final long firstLine = firstNonEmptyLine(lines);
         final long lastLine = lastNonEmptyLine(lines);

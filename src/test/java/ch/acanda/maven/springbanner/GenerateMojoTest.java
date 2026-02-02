@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GenerateMojoTest {
 
-    public static final String DEFAULT_TEXT = "Hello, World!";
+    private static final String DEFAULT_TEXT = "Hello, World!";
 
     @Test
     void generateSimpleBanner(@TempDir final Path folder) throws MojoFailureException, IOException {
