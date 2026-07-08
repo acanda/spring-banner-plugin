@@ -4,8 +4,8 @@ on: [ push ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    timeout-minutes: 180
 
     steps:
       - uses: actions/checkout@v6
