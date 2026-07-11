@@ -115,13 +115,12 @@
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
                     <version>12.2.2</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <configuration>
+                        <failBuildOnCVSS>0</failBuildOnCVSS>
+                        <formats>SARIF,HTML</formats>
+                        <!-- Retries have no backoff: https://github.com/dependency-check/DependencyCheck/issues/8469 -->
+                        <nvdApiDelay>1500</nvdApiDelay>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -230,7 +229,7 @@
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
                         <configuration>
-                            <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+                            <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
                         </configuration>
                     </plugin>
                 </plugins>
